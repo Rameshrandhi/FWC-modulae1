@@ -1,0 +1,436 @@
+\def\mytitle{ Design of Half Adder using NAND gates}
+\def\mykeywords{}
+\def\myauthor{RAMESH RANDHI}
+\def\contact{rameshrandhiglra@gmal.com}
+\def\mymodule{ Future Wireless Communication(FWC22076)}
+% #######################################
+% #### YOU DON'T NEED TO TOUCH BELOW ####
+% #######################################
+\documentclass[10pt, a4paper]{article}
+\usepackage[a4paper,outer=1.5cm,inner=1.5cm,top=1.75cm,bottom=1.5cm]{geometry}
+\twocolumn
+\usepackage{circuitikz}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+%colour our links, remove weird boxes
+\usepackage[colorlinks,linkcolor={black},citecolor={blue!80!black},urlcolor={blue!80!black}]{hyperref}
+%Stop indentation on new paragraphs
+\usepackage[parfill]{parskip}
+%% Arial-like font
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+%Napier logo top right
+\usepackage{watermark}
+%Lorem Ipusm dolor please don't leave any in you final report ;)
+\usepackage{karnaugh-map} 
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{listings}
+%give us the Capital H that we all know and love
+\usepackage{float}
+%tone down the line spacing after section titles
+\usepackage{titlesec}
+%Cool maths printing
+\usepackage{amsmath}
+%PseudoCode
+\usepackage{algorithm2e}
+
+\titlespacing{\subsection}{0pt}{\parskip}{-3pt}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\paragraph}{0pt}{\parskip}{\parskip}
+\newcommand{\figuremacro}[5]{
+    \begin{figure}[#1]
+        \centering
+        \includegraphics[width=#5\columnwidth]{#2}
+        \caption[#3]{\textbf{#3}#4}
+        \label{fig:#2}
+    \end{figure}
+}
+
+
+ \lstset{
+frame=single, 
+breaklines=true,
+columns=fullflexible
+}
+
+\thiswatermark{\centering \put(1,-110){\includegraphics[scale=0.08]{iit}} }
+\title{\mytitle}
+\author{\myauthor\hspace{1em}\\\contact\\IITH\hspace{0.5em}-\hspace{0.5em}\mymodule}
+\date{}
+\hypersetup{pdfauthor=\myauthor,pdftitle=\mytitle,pdfkeywords=\mykeywords}
+\sloppy
+% #######################################
+% ########### START FROM HERE ###########
+% #######################################
+\begin{document}
+ \maketitle
+\begin{abstract}
+     %Replace the lipsum command with actual text 
+  The half adder adds two binary digits called as augend and addend and produces two outputs as sum and carry; XOR is applied to both inputs to produce sum and AND gate is applied to both inputs to produce carry. By using half adder, you can design simple addition with the help of logic gates.
+ \end{abstract}
+    
+\section{Components}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|} \hline
+  \textbf{Component}& \textbf{Value} & \textbf{Quantity} \\
+ \hline
+ bread board& - & 1 \\ \hline
+led &  - & 2 \\ \hline
+Arduino & - & 1 \\ \hline
+Jumper Wires & M-M & required number
+\\ \hline
+
+\end{tabular}  
+\end{center}
+\caption{\label{table:dummytable} }
+\end{table}
+ \section{Karnaugh-map}
+ \subsection{sum} 
+ \begin{karnaugh-map}[2][2][1][$A$][$B$] 
+    \minterms{1,2} 
+    \maxterms{0,3} 
+    \ implicantsol{2}
+    \ implicantsol{1}
+    \end{karnaugh-map}
+      \\  
+    \begin{center} 
+        Figure 1:k-map 
+    \end{center} 
+        
+        From the above karnaugh-map the expression is 
+        
+        
+       A'B+AB'
+        
+       This karnaugh-map is verified by using   Truthtable Table-1 
+        
+        
+        
+\subsection{carry} 
+ \begin{karnaugh-map}[2][2][1][$A$][$B$] 
+    \minterms{3} 
+    \maxterms{0,1,2} 
+    \ implicantsol{2}
+    \ implicantsol{1}
+    \end{karnaugh-map}
+      \\  
+    \begin{center} 
+        Figure 1:k-map 
+    \end{center} 
+        
+        From the above karnaugh-map the expression is 
+        
+        
+       A.B 
+        
+       This karnaugh-map is verified by using  Truthtable Table-1 
+        
+        
+
+
+\section{half adder Truth Table}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|} \hline
+  \textbf{A}& \textbf{B} & \textbf{sum} &\textbf{carry} \\
+ \hline
+ 0&0&0&0\\ \hline
+0&1&1&0 \\ \hline
+1&0&1&0\\ \hline
+1&1&0&1\\ \hline
+\end{tabular}  
+\end{center}
+\caption{\label{table:dummytable} }
+\end{table}
+
+\section{Circuit Diagram}
+\usetikzlibrary{calc}
+\begin{circuitikz} \draw
+(0,4) node[nand port]  (nand1) {}
+(4,4) node[nand port]  (nand2) {}
+%\node[and port, no input leads] (nand2) at (0, 2) {};
+(0,-1) node[nand port] (nand3) {}
+(0,-6) node[nand port] (nand4) {}
+(4,-1.3) node[nand port]  (nand5) {}
+(4,-5.7) node[nand port] (nand6) {}
+(8,-3) node[nand port] (nand7) {}
+
+%\draw ($(nand2.in 1)!0.5!(nand2.in 2)$) -- (A.left);
+(nand1.out)--(nand2.in 1)
+(nand1.out)--(nand2.in 2)
+(nand3.out) -- (nand5.in 1)
+(nand4.out) -- (nand6.in 2)
+(nand5.in 2) -- (nand6.in 1)
+(nand5.out) -- (nand7.in 1)
+(nand6.out) -- (nand7.in 2);
+\node[left] at (nand1.in 1) {\(A\)};
+\node[left] at (nand1.in 2) {\(B\)};
+\node[left] at (nand3.in 1) {\(A'\)};
+\node[left] at (nand3.in 2) {\(B\)};
+\node[left] at (nand4.in 1) {\(B'\)};
+\node[left] at (nand4.in 2) {\(A\)};
+\node[right] at (nand2.out) {\(AB\)};
+\node[right] at (nand7.out) {\(F=A'B+AB'\)};
+\end{circuitikz}
+
+
+   
+    \section{Hardware}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|c|} \hline 
+ \textbf{Arduino} & \textbf{D2,D3} & \textbf{GND} \\ \hline
+ \textbf{Led1} & \textbf{+VE} & \textbf{-VE}\\ \hline
+  \textbf{Led2} & \textbf{+VE} & \textbf{-VE}\\ \hline
+\end{tabular}   
+\end{center}
+\caption{\label{table:dummytable}}
+\end{table}
+   
+   \section{Hardware Connection}
+   
+Give the connections as per Table 3. For taking the inputs connect 5V of arduino to +ve line of bread board to consider it as logic 'HIGH'.Connect GND pin of arduino to -ve line of bread board to consider it as logic 'LOW'.
+\\
+\\
+For example if the inputs A,B are connected 1,0 respectively the output should be sum=1 and carry=0 i.e., the LED connected to the 2nd pin should turn on and 3rd pin should turn off.
+\\
+\\
+In the another case if we connect the inputs A,B to 1,1 respectively the output should be sum=0 and carry=1 i.e., the LED connected to 2nd pin should turn off and 3rd pin should glow.
+
+The circuit implementation of the above function is given in figure 1.
+
+
+ \section{Software}
+  1.Connect the Arduino to the USB port of computer.
+  
+  2.Download the follwing code
+  
+  \begin{lstlisting}
+     https://github.com/Rameshrandhi/FWC-modulae1/blob/main/assign1/codes/assignment1.txt
+  \end{lstlisting}
+  
+  3.Upload the code into the arduino board.
+ 
+  4.The output '1' is represented as the state:'LED ON' and '0' is represented as the state 'LED OFF' 
+ \end{document}
+\def\mytitle{ Design of Half Adder using NAND gates}
+\def\mykeywords{}
+\def\myauthor{RAMESH RANDHI}
+\def\contact{rameshrandhiglra@gmal.com}
+\def\mymodule{ Future Wireless Communication(FWC22076)}
+% #######################################
+% #### YOU DON'T NEED TO TOUCH BELOW ####
+% #######################################
+\documentclass[10pt, a4paper]{article}
+\usepackage[a4paper,outer=1.5cm,inner=1.5cm,top=1.75cm,bottom=1.5cm]{geometry}
+\twocolumn
+\usepackage{circuitikz}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+%colour our links, remove weird boxes
+\usepackage[colorlinks,linkcolor={black},citecolor={blue!80!black},urlcolor={blue!80!black}]{hyperref}
+%Stop indentation on new paragraphs
+\usepackage[parfill]{parskip}
+%% Arial-like font
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+%Napier logo top right
+\usepackage{watermark}
+%Lorem Ipusm dolor please don't leave any in you final report ;)
+\usepackage{karnaugh-map} 
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{listings}
+%give us the Capital H that we all know and love
+\usepackage{float}
+%tone down the line spacing after section titles
+\usepackage{titlesec}
+%Cool maths printing
+\usepackage{amsmath}
+%PseudoCode
+\usepackage{algorithm2e}
+
+\titlespacing{\subsection}{0pt}{\parskip}{-3pt}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\paragraph}{0pt}{\parskip}{\parskip}
+\newcommand{\figuremacro}[5]{
+    \begin{figure}[#1]
+        \centering
+        \includegraphics[width=#5\columnwidth]{#2}
+        \caption[#3]{\textbf{#3}#4}
+        \label{fig:#2}
+    \end{figure}
+}
+
+
+ \lstset{
+frame=single, 
+breaklines=true,
+columns=fullflexible
+}
+
+\thiswatermark{\centering \put(1,-110){\includegraphics[scale=0.08]{iit}} }
+\title{\mytitle}
+\author{\myauthor\hspace{1em}\\\contact\\IITH\hspace{0.5em}-\hspace{0.5em}\mymodule}
+\date{}
+\hypersetup{pdfauthor=\myauthor,pdftitle=\mytitle,pdfkeywords=\mykeywords}
+\sloppy
+% #######################################
+% ########### START FROM HERE ###########
+% #######################################
+\begin{document}
+ \maketitle
+\begin{abstract}
+     %Replace the lipsum command with actual text 
+  The half adder adds two binary digits called as augend and addend and produces two outputs as sum and carry; XOR is applied to both inputs to produce sum and AND gate is applied to both inputs to produce carry. By using half adder, you can design simple addition with the help of logic gates.
+ \end{abstract}
+    
+\section{Components}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|} \hline
+  \textbf{Component}& \textbf{Value} & \textbf{Quantity} \\
+ \hline
+ bread board& - & 1 \\ \hline
+led &  - & 2 \\ \hline
+Arduino & - & 1 \\ \hline
+Jumper Wires & M-M & required number
+\\ \hline
+
+\end{tabular}  
+\end{center}
+\caption{\label{table:dummytable} }
+\end{table}
+ \section{Karnaugh-map}
+ \subsection{sum} 
+ \begin{karnaugh-map}[2][2][1][$A$][$B$] 
+    \minterms{1,2} 
+    \maxterms{0,3} 
+    \ implicantsol{2}
+    \ implicantsol{1}
+    \end{karnaugh-map}
+      \\  
+    \begin{center} 
+        Figure 1:k-map 
+    \end{center} 
+        
+        From the above karnaugh-map the expression is 
+        
+        
+       A'B+AB'
+        
+       This karnaugh-map is verified by using   Truthtable Table-1 
+        
+        
+        
+\subsection{carry} 
+ \begin{karnaugh-map}[2][2][1][$A$][$B$] 
+    \minterms{3} 
+    \maxterms{0,1,2} 
+    \ implicantsol{2}
+    \ implicantsol{1}
+    \end{karnaugh-map}
+      \\  
+    \begin{center} 
+        Figure 1:k-map 
+    \end{center} 
+        
+        From the above karnaugh-map the expression is 
+        
+        
+       A.B 
+        
+       This karnaugh-map is verified by using  Truthtable Table-1 
+        
+        
+
+
+\section{half adder Truth Table}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|} \hline
+  \textbf{A}& \textbf{B} & \textbf{sum} &\textbf{carry} \\
+ \hline
+ 0&0&0&0\\ \hline
+0&1&1&0 \\ \hline
+1&0&1&0\\ \hline
+1&1&0&1\\ \hline
+\end{tabular}  
+\end{center}
+\caption{\label{table:dummytable} }
+\end{table}
+
+\section{Circuit Diagram}
+\usetikzlibrary{calc}
+\begin{circuitikz} \draw
+(0,4) node[nand port]  (nand1) {}
+(4,4) node[nand port]  (nand2) {}
+%\node[and port, no input leads] (nand2) at (0, 2) {};
+(0,-1) node[nand port] (nand3) {}
+(0,-6) node[nand port] (nand4) {}
+(4,-1.3) node[nand port]  (nand5) {}
+(4,-5.7) node[nand port] (nand6) {}
+(8,-3) node[nand port] (nand7) {}
+
+%\draw ($(nand2.in 1)!0.5!(nand2.in 2)$) -- (A.left);
+(nand1.out)--(nand2.in 1)
+(nand1.out)--(nand2.in 2)
+(nand3.out) -- (nand5.in 1)
+(nand4.out) -- (nand6.in 2)
+(nand5.in 2) -- (nand6.in 1)
+(nand5.out) -- (nand7.in 1)
+(nand6.out) -- (nand7.in 2);
+\node[left] at (nand1.in 1) {\(A\)};
+\node[left] at (nand1.in 2) {\(B\)};
+\node[left] at (nand3.in 1) {\(A'\)};
+\node[left] at (nand3.in 2) {\(B\)};
+\node[left] at (nand4.in 1) {\(B'\)};
+\node[left] at (nand4.in 2) {\(A\)};
+\node[right] at (nand2.out) {\(AB\)};
+\node[right] at (nand7.out) {\(F=A'B+AB'\)};
+\end{circuitikz}
+
+
+   
+    \section{Hardware}
+\begin{table}[htbp]
+ \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|c|} \hline 
+ \textbf{Arduino} & \textbf{D2,D3} & \textbf{GND} \\ \hline
+ \textbf{Led1} & \textbf{+VE} & \textbf{-VE}\\ \hline
+  \textbf{Led2} & \textbf{+VE} & \textbf{-VE}\\ \hline
+\end{tabular}   
+\end{center}
+\caption{\label{table:dummytable}}
+\end{table}
+   
+   \section{Hardware Connection}
+   
+Give the connections as per Table 3. For taking the inputs connect 5V of arduino to +ve line of bread board to consider it as logic 'HIGH'.Connect GND pin of arduino to -ve line of bread board to consider it as logic 'LOW'.
+\\
+\\
+For example if the inputs A,B are connected 1,0 respectively the output should be sum=1 and carry=0 i.e., the LED connected to the 2nd pin should turn on and 3rd pin should turn off.
+\\
+\\
+In the another case if we connect the inputs A,B to 1,1 respectively the output should be sum=0 and carry=1 i.e., the LED connected to 2nd pin should turn off and 3rd pin should glow.
+
+The circuit implementation of the above function is given in figure 1.
+
+
+ \section{Software}
+  1.Connect the Arduino to the USB port of computer.
+  
+  2.Download the follwing code
+  
+  \begin{lstlisting}
+     https://github.com/Rameshrandhi/FWC-modulae1/blob/main/assign1/codes/assignment1.txt
+  \end{lstlisting}
+  
+  3.Upload the code into the arduino board.
+ 
+  4.The output '1' is represented as the state:'LED ON' and '0' is represented as the state 'LED OFF' 
+ \end{document}
