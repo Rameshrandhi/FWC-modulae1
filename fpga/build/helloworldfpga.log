@@ -1,0 +1,11 @@
+-t
+adding top
+helloworldfpga
+-v
+/data/data/com.termux/files/home/fpga-examples/assign1//flash.bin
+-d
+ql-eos-s3_wlcsp
+-p
+/data/data/com.termux/files/home/fpga-examples/assign1//quickfeather.pcf
+-P
+PU64
