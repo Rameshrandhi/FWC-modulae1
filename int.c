@@ -15,7 +15,4 @@ int main() {
     fprintf(fp, "\n");
   }
   
-  fclose(fp);
-  return 0;
-}
-
+  fclose(fp
